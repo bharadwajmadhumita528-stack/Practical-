@@ -1,0 +1,93 @@
+#include <iostream>
+using namespace std;
+
+// Node structure for linked list
+struct Node {
+    int data;
+    Node* next;
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+// Stack class using linked list
+class Stack {
+    Node* top;  // pointer to the top of the stack
+
+public:
+    Stack() {
+        top = nullptr;  // stack is empty initially
+    }
+
+    // Check if stack is empty
+    bool isEmpty() {
+        return top == nullptr;
+    }
+
+    // Check if stack is full (simulated by checking memory allocation)
+    bool isFull() {
+        Node* temp = new(nothrow) Node(0);
+        if (temp == nullptr)
+            return true;  // memory not available
+        delete temp;
+        return false;
+    }
+
+    // Push operation: insert an element at the top
+    void push(int value) {
+        if (isFull()) {
+            cout << "Stack is full (no memory available)." << endl;
+            return;
+        }
+        Node* newNode = new Node(value);
+        newNode->next = top;
+        top = newNode;
+        cout << "Pushed " << value << " into stack." << endl;
+    }
+
+    // Pop operation: remove an element from the top
+    void pop() {
+        if (isEmpty()) {
+            cout << "Stack is empty. Cannot pop." << endl;
+            return;
+        }
+        Node* temp = top;
+        cout << "Popped " << top->data << " from stack." << endl;
+        top = top->next;
+        delete temp;
+    }
+
+    // Display stack elements
+    void display() {
+        if (isEmpty()) {
+            cout << "Stack is empty." << endl;
+            return;
+        }
+        cout << "Stack elements (top to bottom): ";
+        Node* current = top;
+        while (current) {
+            cout << current->data << " ";
+            current = current->next;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    Stack s;
+
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    s.display();
+
+    s.pop();
+    s.display();
+
+    s.pop();
+    s.pop();
+    s.pop(); // This will show stack is empty
+
+    return 0;
+}
