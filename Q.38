@@ -1,0 +1,98 @@
+#include <iostream>
+using namespace std;
+
+// Node for the inner list
+struct InnerNode {
+    int data;
+    InnerNode* next;
+    InnerNode(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+// Node for the outer list
+struct OuterNode {
+    InnerNode* innerHead;  // Points to the head of an inner list
+    OuterNode* next;
+    OuterNode() {
+        innerHead = nullptr;
+        next = nullptr;
+    }
+};
+
+// Function to add a new node to an inner list
+void addToInnerList(InnerNode*& head, int value) {
+    InnerNode* newNode = new InnerNode(value);
+    if (!head) {
+        head = newNode;
+        return;
+    }
+    InnerNode* temp = head;
+    while (temp->next) temp = temp->next;
+    temp->next = newNode;
+}
+
+// Function to add a new inner list to the outer list
+void addToOuterList(OuterNode*& outerHead, InnerNode* newInnerHead) {
+    OuterNode* newOuterNode = new OuterNode();
+    newOuterNode->innerHead = newInnerHead;
+
+    if (!outerHead) {
+        outerHead = newOuterNode;
+        return;
+    }
+
+    OuterNode* temp = outerHead;
+    while (temp->next) temp = temp->next;
+    temp->next = newOuterNode;
+}
+
+// Function to print the list of lists
+void printListOfLists(OuterNode* outerHead) {
+    int listNumber = 1;
+    while (outerHead) {
+        cout << "List " << listNumber << ": ";
+        InnerNode* temp = outerHead->innerHead;
+        while (temp) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+        outerHead = outerHead->next;
+        listNumber++;
+    }
+}
+
+int main() {
+    OuterNode* outerHead = nullptr;
+
+    // Create first inner list: 1 -> 2 -> 3
+    InnerNode* list1 = nullptr;
+    addToInnerList(list1, 1);
+    addToInnerList(list1, 2);
+    addToInnerList(list1, 3);
+
+    // Create second inner list: 4 -> 5
+    InnerNode* list2 = nullptr;
+    addToInnerList(list2, 4);
+    addToInnerList(list2, 5);
+
+    // Create third inner list: 6 -> 7 -> 8 -> 9
+    InnerNode* list3 = nullptr;
+    addToInnerList(list3, 6);
+    addToInnerList(list3, 7);
+    addToInnerList(list3, 8);
+    addToInnerList(list3, 9);
+
+    // Add these inner lists to the outer list
+    addToOuterList(outerHead, list1);
+    addToOuterList(outerHead, list2);
+    addToOuterList(outerHead, list3);
+
+    // Print everything
+    cout << "List of Lists:" << endl;
+    printListOfLists(outerHead);
+
+    return 0;
+}
