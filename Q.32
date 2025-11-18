@@ -1,0 +1,31 @@
+#include <iostream>
+using namespace std;
+
+// Function to print positions of even numbers
+void printEvenPositions(int arr[], int length) {
+    cout << "Positions of even numbers:" << endl;
+    for (int i = 0; i < length; i++) {
+        if (arr[i] % 2 == 0) {
+            cout << i << " "; // position (starting from 0)
+        }
+    }
+    cout << endl;
+}
+
+int main() {
+    int arr[10]; // numbers divisible by 3 up to 30: 3,6,9,...,30
+    int idx = 0;
+    for (int num = 3; num <= 30; num += 3) {
+        arr[idx++] = num;
+    }
+
+    cout << "Array elements (divisible by 3 up to 30):" << endl;
+    for (int i = 0; i < 10; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    printEvenPositions(arr, 10);
+
+    return 0;
+}
