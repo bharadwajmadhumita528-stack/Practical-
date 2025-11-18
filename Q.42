@@ -1,0 +1,36 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+void decimalToBinary(int decimal) {
+    stack<int> s;
+
+    // Step 1: Keep dividing by 2 and push remainders to stack
+    while (decimal > 0) {
+        int remainder = decimal % 2;
+        s.push(remainder);
+        decimal = decimal / 2;
+    }
+
+    // Step 2: Pop all elements from stack to get binary
+    cout << "Binary number: ";
+    while (!s.empty()) {
+        cout << s.top();
+        s.pop();
+    }
+    cout << endl;
+}
+
+int main() {
+    int number;
+    cout << "Enter a decimal number: ";
+    cin >> number;
+
+    if (number == 0) {
+        cout << "Binary number: 0" << endl;
+    } else {
+        decimalToBinary(number);
+    }
+
+    return 0;
+}
