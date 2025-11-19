@@ -1,0 +1,131 @@
+#include <stdio.h>
+#include <string.h>
+
+// Bubble Sort - compares adjacent elements and swaps if out of order, repeating until sorted
+void bubbleSort(int arr[], int n) {
+    int i, j, temp;
+    for (i = 0; i < n-1; i++) {
+        int swapped = 0; // to optimize if already sorted
+        for (j = 0; j < n-i-1; j++) {
+            if (arr[j] > arr[j+1]) {
+                // Swap
+                temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+                swapped = 1;
+            }
+        }
+        // If no two elements were swapped in inner loop, array is sorted
+        if (!swapped)
+            break;
+    }
+}
+
+// Insertion Sort - builds sorted array one item at a time by inserting at the right place
+void insertionSort(int arr[], int n) {
+    int i, key, j;
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
+
+        // Move elements greater than key to one position ahead
+        while (j >= 0 && arr[j] > key) {
+            arr[j+1] = arr[j];
+            j--;
+        }
+        // Insert key at correct position
+        arr[j+1] = key;
+    }
+}
+
+// Selection Sort - repeatedly selects minimum element and swaps it to front
+void selectionSort(int arr[], int n) {
+    int i, j, min_idx, temp;
+    for (i = 0; i < n-1; i++) {
+        min_idx = i;
+        // Find minimum in remaining unsorted array
+        for (j = i+1; j < n; j++)
+            if (arr[j] < arr[min_idx])
+                min_idx = j;
+
+        // Swap minimum element with first element
+        temp = arr[min_idx];
+        arr[min_idx] = arr[i];
+        arr[i] = temp;
+    }
+}
+
+// Counting Sort - counts occurrences of elements and builds sorted array (works for non-negative integers)
+void countingSort(int arr[], int n) {
+    int i, max = arr[0];
+
+    // Find maximum value to know range of counts
+    for (i = 1; i < n; i++) {
+        if (arr[i] > max)
+            max = arr[i];
+    }
+
+    int count[max+1];
+    memset(count, 0, sizeof(count)); // Initialize count array
+
+    // Store count of each element
+    for (i = 0; i < n; i++) {
+        count[arr[i]]++;
+    }
+
+    // Rebuild sorted array using counts
+    int index = 0;
+    for (i = 0; i <= max; i++) {
+        while (count[i] > 0) {
+            arr[index++] = i;
+            count[i]--;
+        }
+    }
+}
+
+// Helper to print array
+void printArray(int arr[], int n) {
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("
+");
+}
+
+int main() {
+    int arr1[] = {64, 34, 25, 12, 22, 11, 90};
+    int n1 = sizeof(arr1)/sizeof(arr1[0]);
+    printf("Original array for Bubble Sort: ");
+    printArray(arr1, n1);
+    bubbleSort(arr1, n1);
+    printf("Sorted array after Bubble Sort: ");
+    printArray(arr1, n1);
+
+    int arr2[] = {12, 11, 13, 5, 6};
+    int n2 = sizeof(arr2)/sizeof(arr2[0]);
+    printf("
+Original array for Insertion Sort: ");
+    printArray(arr2, n2);
+    insertionSort(arr2, n2);
+    printf("Sorted array after Insertion Sort: ");
+    printArray(arr2, n2);
+
+    int arr3[] = {29, 10, 14, 37, 13};
+    int n3 = sizeof(arr3)/sizeof(arr3[0]);
+    printf("
+Original array for Selection Sort: ");
+    printArray(arr3, n3);
+    selectionSort(arr3, n3);
+    printf("Sorted array after Selection Sort: ");
+    printArray(arr3, n3);
+
+    int arr4[] = {4, 2, 2, 8, 3, 3, 1};
+    int n4 = sizeof(arr4)/sizeof(arr4[0]);
+    printf("
+Original array for Counting Sort: ");
+    printArray(arr4, n4);
+    countingSort(arr4, n4);
+    printf("Sorted array after Counting Sort: ");
+    printArray(arr4, n4);
+
+    return 0;
+}
