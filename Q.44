@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure for the linked list
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Queue structure with pointers for front and rear
+struct Queue {
+    struct Node *front, *rear;
+};
+
+// Create an empty queue
+struct Queue* createQueue() {
+    struct Queue* q = (struct Queue*)malloc(sizeof(struct Queue));
+    q->front = q->rear = NULL;
+    return q;
+}
+
+// Check if the queue is empty
+int isEmpty(struct Queue* q) {
+    return (q->front == NULL);
+}
+
+// Add an element to the queue (enqueue)
+void enqueue(struct Queue* q, int value) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = value;
+    temp->next = NULL;
+    if (isEmpty(q)) {
+        q->front = q->rear = temp;
+    } else {
+        q->rear->next = temp;
+        q->rear = temp;
+    }
+    printf("Added %d to queue
+", value);
+}
+
+// Remove an element from the queue (dequeue)
+int dequeue(struct Queue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty, cannot remove element.
+");
+        return -1; // Indicate failure
+    }
+    struct Node* temp = q->front;
+    int removed = temp->data;
+    q->front = q->front->next;
+    if (q->front == NULL) { // Queue became empty
+        q->rear = NULL;
+    }
+    free(temp);
+    printf("Removed %d from queue
+", removed);
+    return removed;
+}
+
+// Print the queue contents
+void printQueue(struct Queue* q) {
+    struct Node* temp = q->front;
+    printf("Queue: ");
+    while (temp) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL
+");
+}
+
+int main() {
+    struct Queue* q = createQueue();
+
+    enqueue(q, 10);
+    enqueue(q, 20);
+    enqueue(q, 30);
+    printQueue(q);
+
+    dequeue(q);
+    printQueue(q);
+
+    enqueue(q, 40);
+    printQueue(q);
+
+    if (isEmpty(q)) {
+        printf("Queue is empty
+");
+    } else {
+        printf("Queue is not empty
+");
+    }
+    return 0;
+}
