@@ -1,0 +1,107 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define node structure for BST using linked list
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Create a new node
+struct Node* newNode(int value) {
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->data = value;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+// Insert value into BST
+struct Node* insert(struct Node* root, int value) {
+    if (root == NULL) {
+        return newNode(value);
+    }
+    if (value < root->data) {
+        root->left = insert(root->left, value);
+    } else {
+        root->right = insert(root->right, value);
+    }
+    return root;
+}
+
+// Print prefix notation (root, left, right)
+void printPrefix(struct Node* root) {
+    if (root != NULL) {
+        printf("%d ", root->data);
+        printPrefix(root->left);
+        printPrefix(root->right);
+    }
+}
+
+// Print infix notation (left, root, right)
+void printInfix(struct Node* root) {
+    if (root != NULL) {
+        printInfix(root->left);
+        printf("%d ", root->data);
+        printInfix(root->right);
+    }
+}
+
+// Print postfix notation (left, right, root)
+void printPostfix(struct Node* root) {
+    if (root != NULL) {
+        printPostfix(root->left);
+        printPostfix(root->right);
+        printf("%d ", root->data);
+    }
+}
+
+// Search element in BST
+int search(struct Node* root, int value) {
+    if (root == NULL)
+        return 0;  // Not found
+    if (root->data == value)
+        return 1;  // Found
+    else if (value < root->data)
+        return search(root->left, value);
+    else
+        return search(root->right, value);
+}
+
+int main() {
+    struct Node* root = NULL;
+
+    // Insert nodes to create BST
+    int values[] = {50, 30, 70, 20, 40, 60, 80};
+    int n = sizeof(values) / sizeof(values[0]);
+    for(int i = 0; i < n; i++) {
+        root = insert(root, values[i]);
+    }
+
+    printf("Prefix notation: ");
+    printPrefix(root);
+    printf("
+");
+
+    printf("Infix notation: ");
+    printInfix(root);
+    printf("
+");
+
+    printf("Postfix notation: ");
+    printPostfix(root);
+    printf("
+");
+
+    // Example search
+    int toSearch = 40;
+    if (search(root, toSearch))
+        printf("Element %d found in BST.
+", toSearch);
+    else
+        printf("Element %d not found in BST.
+", toSearch);
+
+    return 0;
+}
