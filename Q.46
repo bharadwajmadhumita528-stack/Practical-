@@ -1,0 +1,60 @@
+#include <stdio.h>
+
+#define SIZE 31  // Tree supports up to 31 nodes (for height up to 4)
+
+int bst[SIZE];
+
+// Set all positions to -1 (empty)
+void init_bst() {
+    for (int i = 0; i < SIZE; i++)
+        bst[i] = -1;
+}
+
+// Insert element into BST (recursive)
+void insert_bst(int key, int idx) {
+    if (idx >= SIZE) return;      // Out of bounds
+    if (bst[idx] == -1) {
+        bst[idx] = key;
+        return;
+    }
+    if (key < bst[idx])
+        insert_bst(key, 2 * idx + 1);  // Left child
+    else
+        insert_bst(key, 2 * idx + 2);  // Right child
+}
+
+// Print prefix (preorder): root, left, right
+void print_prefix(int idx) {
+    if (idx >= SIZE || bst[idx] == -1) return;
+    printf("%d ", bst[idx]);
+    print_prefix(2 * idx + 1);
+    print_prefix(2 * idx + 2);
+}
+
+// Print infix (inorder): left, root, right
+void print_infix(int idx) {
+    if (idx >= SIZE || bst[idx] == -1) return;
+    print_infix(2 * idx + 1);
+    printf("%d ", bst[idx]);
+    print_infix(2 * idx + 2);
+}
+
+int main() {
+    init_bst();
+    int arr[] = {50, 30, 70, 20, 40, 60, 80};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    for (int i = 0; i < n; i++)
+        insert_bst(arr[i], 0);
+
+    printf("Prefix (preorder): ");
+    print_prefix(0);
+    printf("
+");
+
+    printf("Infix (inorder): ");
+    print_infix(0);
+    printf("
+");
+
+    return 0;
+}
