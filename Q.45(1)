@@ -1,0 +1,11 @@
+#include <stdio.h>
+
+// Linear search: go step by step through each element
+int linearSearch(int arr[], int n, int target) {
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == target) {
+            return i; // Found, return index
+        }
+    }
+    return -1; // Not found
+}
